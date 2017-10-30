@@ -1,0 +1,11 @@
+<h3>Welcome to the Cookbook!</h3>
+<h4>List of all recipes</h4>
+<ul>
+  <% @recipes.each_with_index do |recipe, index| %>
+  <% cooking_time = recipe.cooking_time == "" ? "" : "(#{recipe.cooking_time} min)"%>
+  <% tested = recipe.is_tested? ? "[X]" : "[ ]" %>
+    <li>
+      <%= index + 1 %> <%= tested %> <%= recipe.name %> : <%= recipe.description %> <%=cooking_time %>
+    </li>
+  <% end %>
+</ul>
