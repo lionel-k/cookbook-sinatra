@@ -30,20 +30,38 @@ class Controller
 
   # Used to import recipes from the Letscookfrench website
   def import
+
+    # TODO
+    # Ask by which category to import (ingredient / difficulty)
+
+    # category =
+
+    # if category == "1"
+    #   url = "http://www.letscookfrench.com/recipes/find-recipe.aspx?s=#{keyword}"
+    # elsif category == "2"
+    #   url = "http://www.letscookfrench.com/recipes/find-recipe.aspx?dif=#{keyword}"
+    # else
+    #   puts "Please press 1 or 2"
+    # end
+
     # Ask the user the ingredient that he/she wants
     ingredient = @view.ask_user_for_ingredient
+
 
     message = "'#{ingredient}' recipes"
     @view.show_scraping_message("Looking for", message)
 
     # Scraping the data
-    scraper = ScrapeLetsCookFrenchService.new(ingredient)
-    data_recipes = scraper.call
+    scraper = ScrapeLetsCookFrenchService.new
+    data_recipes = scraper.call(ingredient)
 
     @view.show_recipes_found(data_recipes)
 
     # Ask the user the recipe to import
     index_recipe = @view.ask_user_for_index("import")
+
+    # TODO
+    # Let the user import multiple recipes in one time
 
     # creating the recipe and adding it to the database
     recipe = data_recipes[index_recipe]
@@ -70,6 +88,6 @@ class Controller
     list
 
     # store the data in the csv
-    @cookbook.store_recipes_csv
+    @cookbook.save_to_csv
   end
 end

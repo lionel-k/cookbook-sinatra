@@ -23,7 +23,7 @@ class View
   end
 
   def ask_user_for_ingredient
-    puts "What ingredient would you like a recipe for?"
+    puts "What ingredient would you like for the recipes ?"
     print "> "
     gets.chomp
   end

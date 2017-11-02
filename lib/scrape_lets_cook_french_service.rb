@@ -1,17 +1,13 @@
-# require 'nokogiri'
-# require 'open-uri'
+require 'nokogiri'
+require 'open-uri'
 require_relative 'recipe'
 
 
 class ScrapeLetsCookFrenchService
-  def initialize(keyword)
-    @keyword = keyword
-  end
-
-  def call
+  def call(keyword)
     # file = 'tomato.html'  # or 'strawberry.html'
     # html_doc = Nokogiri::HTML(File.open(file), nil, 'utf-8')
-    url = "http://www.letscookfrench.com/recipes/find-recipe.aspx?s=#{@keyword}"
+    url = "http://www.letscookfrench.com/recipes/find-recipe.aspx?s=#{keyword}"
     html_doc = Nokogiri::HTML(open(url), nil, 'utf-8')
 
     recipes = get_recipes(html_doc)
@@ -39,7 +35,8 @@ class ScrapeLetsCookFrenchService
       recipe_description = element.search('.m_detail_recette').text.strip
       cooking_time = get_cooking_time(element)
       recipe_ingredients = get_ingredients(element)
-      attributes = { name: recipe_name, description: recipe_description, cooking_time: cooking_time, ingredients: recipe_ingredients}
+      recipe_difficulty = recipe_description.split(" - ")[2]
+      attributes = { name: recipe_name, description: recipe_description, cooking_time: cooking_time, ingredients: recipe_ingredients, difficulty: recipe_difficulty }
       result << Recipe.new(attributes)
     end
     result

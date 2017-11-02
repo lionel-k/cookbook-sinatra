@@ -8,7 +8,7 @@ html_doc.search('.m_contenu_resultat').each do |element|
   recipe_name = element.search('.m_titre_resultat a').text
   recipe_description = element.search('.m_detail_recette').text.strip
   # p recipe_name
-  # p recipe_description
+  p recipe_description.split(" - ")[3]
   time = element.search('.m_detail_time').text
   time.gsub!(/min/,"")
   time_a = time.split(" ").reject { |t| t.to_i <= 0 }

@@ -26,14 +26,8 @@ class Cookbook
     @recipes[index].tested!
   end
 
-  def store_recipes_csv
-    CSV.open(@csv_file_path, 'wb', @csv_options) do |csv|
-      csv << ["name", "description", "cooking_time", "tested", "ingredients"]
-      @recipes.each do |recipe|
-        recipe_a = [recipe.name, recipe.description, recipe.cooking_time, recipe.tested, recipe.ingredients]
-        csv << recipe_a
-      end
-    end
+  def save_to_csv
+    store_recipes_csv
   end
 
   private
@@ -43,11 +37,22 @@ class Cookbook
       name = row["name"]
       description = row["description"]
       cooking_time = row["cooking_time"]
-      tested = row["tested"].to_s == 'true' ? true : false
+      tested = row["tested"] == 'true'
       ingredients = row["ingredients"]
-      attributes = { name: name, description: description, cooking_time: cooking_time, tested: tested, ingredients: ingredients }
+      difficulty = row["difficulty"]
+      attributes = { name: name, description: description, cooking_time: cooking_time, tested: tested, ingredients: ingredients, difficulty: difficulty }
       recipe = Recipe.new(attributes)
       @recipes << recipe
+    end
+  end
+
+  def store_recipes_csv
+    CSV.open(@csv_file_path, 'wb', @csv_options) do |csv|
+      csv << ["name", "description", "cooking_time", "tested", "ingredients", "difficulty"]
+      @recipes.each do |recipe|
+        recipe_a = [recipe.name, recipe.description, recipe.cooking_time, recipe.tested, recipe.ingredients, recipe.difficulty]
+        csv << recipe_a
+      end
     end
   end
 end
